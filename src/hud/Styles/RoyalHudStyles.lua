@@ -2,7 +2,7 @@
 -- Royal Hud
 --
 -- @author Royal Modding
--- @version 1.1.1.0
+-- @version 1.2.0.0
 -- @date 10/11/2020
 
 --- RoyalHudStyles class
@@ -38,8 +38,8 @@ RoyalHudStyles.defaultStyle.titledPanel.title.offset = {0, 1}
 RoyalHudStyles.defaultStyle.titledPanel.title.forceUpper = false
 
 --- Get a style starting from another one
----@param style RoyalHudStyle|nil
----@param baseStyle RoyalHudStyle|nil
+---@param style? RoyalHudStyle
+---@param baseStyle? RoyalHudStyle
 ---@return RoyalHudStyle
 function RoyalHudStyles.getStyle(style, baseStyle)
     local newStyle = TableUtility.clone(baseStyle or RoyalHudStyles.defaultStyle)
