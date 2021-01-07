@@ -2,7 +2,7 @@
 -- Royal Hud
 --
 -- @author Royal Modding
--- @version 1.1.0.0
+-- @version 1.1.1.0
 -- @date 17/11/2020
 
 --- RoyalHudTitledPanel class

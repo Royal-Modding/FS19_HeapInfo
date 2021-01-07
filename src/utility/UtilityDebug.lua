@@ -114,7 +114,7 @@ end
 ---@param b number b
 ---@param ar number r color if active
 ---@param ag number g color if active
----@param ab number b color if active
+---@param ab number b color if active\
 ---@param active boolean active?
 function Utility.drawDebugRectangle(node, minX, maxX, minZ, maxZ, yOffset, alignToGround, r, g, b, ar, ag, ab, active)
     if active then

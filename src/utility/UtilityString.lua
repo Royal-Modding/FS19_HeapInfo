@@ -5,7 +5,7 @@
 -- @version 1.6.0.0
 -- @date 05/01/2021
 
---- StringUtility class
+--- String utilities class
 ---@class StringUtility
 StringUtility = StringUtility or {}
 

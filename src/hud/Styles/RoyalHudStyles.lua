@@ -2,7 +2,7 @@
 -- Royal Hud
 --
 -- @author Royal Modding
--- @version 1.1.0.0
+-- @version 1.1.1.0
 -- @date 10/11/2020
 
 --- RoyalHudStyles class
@@ -42,9 +42,9 @@ RoyalHudStyles.defaultStyle.titledPanel.title.forceUpper = false
 ---@param baseStyle RoyalHudStyle|nil
 ---@return RoyalHudStyle
 function RoyalHudStyles.getStyle(style, baseStyle)
-    local newStyle = Utility.clone(baseStyle or RoyalHudStyles.defaultStyle)
+    local newStyle = TableUtility.clone(baseStyle or RoyalHudStyles.defaultStyle)
     if (style ~= nil) then
-        Utility.overwrite(newStyle, style)
+        TableUtility.overwrite(newStyle, style)
     end
     return newStyle
 end

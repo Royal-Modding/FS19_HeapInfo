@@ -5,7 +5,7 @@
 -- @version 1.6.0.0
 -- @date 05/01/2021
 
---- TableUtility class
+--- Table utilities class
 ---@class TableUtility
 TableUtility = TableUtility or {}
 

@@ -5,7 +5,7 @@
 -- @version 1.6.0.0
 -- @date 09/11/2020
 
---- Utility class
+--- Utilities class
 ---@class Utility
 Utility = Utility or {}
 
