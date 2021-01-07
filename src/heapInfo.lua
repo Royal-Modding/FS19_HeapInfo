@@ -14,8 +14,6 @@ HeapInfo.scanTimer = 0
 HeapInfo.scanTimeout = 500
 HeapInfo.foundHeap = nil
 HeapInfo.debugCubes = {}
-HeapInfo.scanSize = 4
-HeapInfo.debugCubePadding = 0.05
 
 function HeapInfo:initialize(baseDirectory, missionCollaborators)
     addConsoleCommand("hiGetInfo", "Get heap informations.", "consoleCommandGetInfo", self)
@@ -57,6 +55,12 @@ function HeapInfo:onPreLoadOnCreateLoadedObjects(xmlFile)
 end
 
 function HeapInfo:onLoadFinished()
+    self.terrainSize = g_currentMission.terrainSize
+    self.terrainDetailHeightSize = getDensityMapSize(g_currentMission.terrainDetailHeightId)
+    self.scanSize = (self.terrainSize / self.terrainDetailHeightSize) * 2
+    self.scanAreaSize = self.scanSize / 2
+    self.scanAreaOffset = self.scanAreaSize / 2
+    self.scanAreaCenterOffset = self.scanAreaOffset + (self.scanAreaSize / 2)
 end
 
 function HeapInfo:onStartMission()
@@ -84,11 +88,11 @@ function HeapInfo:onUpdate(dt)
 
         if self.debug then
             if self.foundHeap ~= nil then
-                Utility.drawDebugCube({self.foundHeap.x, self.foundHeap.y, self.foundHeap.z}, 0.25, 1, 1, 0)
+                Utility.drawDebugCube({self.foundHeap.x, self.foundHeap.y, self.foundHeap.z}, self.scanAreaOffset, 1, 1, 0)
             end
             for _, c in pairs(self.debugCubes) do
                 local cw = c.w / 2
-                DebugUtil.drawSimpleDebugCube(c.x + cw, c.y, c.z + cw, c.w, c.r, c.g, c.b)
+                Utility.drawDebugCube({c.x + cw, c.y, c.z + cw}, c.w, c.r, c.g, c.b)
             end
         end
     end
@@ -159,11 +163,21 @@ function HeapInfo:getInfo(x, z)
 
     local total = 0
 
-    local fillType = DensityMapHeightUtil.getFillTypeAtArea(startX, startZ, startX, startZ + 1, startX + 1, startZ)
+    local fillType =
+        DensityMapHeightUtil.getFillTypeAtArea(
+        startX + self.scanAreaOffset,
+        startZ + self.scanAreaOffset,
+        startX + self.scanAreaOffset,
+        startZ + self.scanAreaOffset + self.scanAreaSize,
+        startX + self.scanAreaOffset + self.scanAreaSize,
+        startZ + self.scanAreaOffset
+    )
+
     if fillType ~= FillType.UNKNOWN then
         self:resetIsScanned()
-        table.insert(self.debugCubes, {x = startX + 0.25, y = self.foundHeap.y + 1, z = startZ + 0.25, w = 0.5, r = 1, g = 1, b = 0})
-
+        if self.debug then
+            table.insert(self.debugCubes, {x = startX + self.scanAreaCenterOffset, y = self.foundHeap.y + 1, z = startZ + self.scanAreaCenterOffset, w = self.scanAreaSize, r = 0, g = 1, b = 1})
+        end
         total = self:scanRecursively({{startX, startZ}}, fillType)
     end
 
@@ -207,13 +221,21 @@ end
 function HeapInfo:scanAt(x, z, fillType)
     if not self:getIsScanned(x, z) then
         self:setIsScanned(x, z)
-        local amount, _, _ = DensityMapHeightUtil.getFillLevelAtArea(fillType, x, z, x, z + self.scanSize, x + self.scanSize, z)
+        local amount, _, _ =
+            DensityMapHeightUtil.getFillLevelAtArea(
+            fillType,
+            x + self.scanAreaOffset,
+            z + self.scanAreaOffset,
+            x + self.scanAreaOffset,
+            z + self.scanAreaOffset + self.scanAreaSize,
+            x + self.scanAreaOffset + self.scanAreaSize,
+            z + self.scanAreaOffset
+        )
         if self.debug then
             if amount > 0 then
-                print(amount)
-                table.insert(self.debugCubes, {x = x + self.debugCubePadding, y = self.foundHeap.y + 2, z = z + self.debugCubePadding, w = self.scanSize - (self.debugCubePadding * 2), r = 0, g = 1, b = 0})
+                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = self.foundHeap.y + 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 0, g = 1, b = 0})
             else
-                table.insert(self.debugCubes, {x = x + self.debugCubePadding, y = self.foundHeap.y + 2, z = z + self.debugCubePadding, w = self.scanSize - (self.debugCubePadding * 2), r = 1, g = 0, b = 0})
+                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = self.foundHeap.y + 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 1, g = 0, b = 0})
             end
         end
         return amount
