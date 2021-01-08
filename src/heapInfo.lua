@@ -9,6 +9,7 @@ InitRoyalMod(Utils.getFilename("rmod/", g_currentModDirectory))
 InitRoyalUtility(Utils.getFilename("utility/", g_currentModDirectory))
 InitRoyalHud(Utils.getFilename("hud/", g_currentModDirectory))
 
+---@class HeapInfo
 HeapInfo = RoyalMod.new(r_debug_r)
 HeapInfo.scanTimer = 0
 HeapInfo.scanTimeout = 500
@@ -28,6 +29,7 @@ function HeapInfo:onSetMissionInfo(missionInfo, missionDynamicInfo)
 end
 
 function HeapInfo:onLoad()
+    self.hud = InfoHud:new()
 end
 
 function HeapInfo:onPreLoadMap(mapFile)
@@ -77,6 +79,7 @@ end
 
 function HeapInfo:onUpdate(dt)
     if g_dedicatedServerInfo == nil and g_currentMission.player.isEntered then
+        self.hud:update(dt)
         self.scanTimer = self.scanTimer + dt
         if self.scanTimer >= self.scanTimeout then
             self.scanTimer = 0
@@ -90,9 +93,10 @@ function HeapInfo:onUpdate(dt)
             if self.foundHeap ~= nil then
                 Utility.drawDebugCube({self.foundHeap.x, self.foundHeap.y, self.foundHeap.z}, self.scanAreaOffset, 1, 1, 0)
             end
+            local tn = g_currentMission.terrainRootNode
             for _, c in pairs(self.debugCubes) do
                 local cw = c.w / 2
-                Utility.drawDebugCube({c.x + cw, c.y, c.z + cw}, c.w, c.r, c.g, c.b)
+                Utility.drawDebugCube({c.x + cw, getTerrainHeightAtWorldPos(tn, c.x + cw, 0, c.z + cw) + c.y, c.z + cw}, c.w, c.r, c.g, c.b)
             end
         end
     end
@@ -114,6 +118,9 @@ function HeapInfo:onKeyEvent(unicode, sym, modifier, isDown)
 end
 
 function HeapInfo:onDraw()
+    if g_dedicatedServerInfo == nil and g_currentMission.player.isEntered then
+        self.hud:draw()
+    end
 end
 
 function HeapInfo:onPreSaveSavegame(savegameDirectory, savegameIndex)
@@ -133,7 +140,7 @@ function HeapInfo:onDeleteMap()
 end
 
 function HeapInfo:raycastCallback(hitObjectId, x, y, z, _, _, _, _, _, _)
-    if hitObjectId ~= self.rootNode then
+    if hitObjectId ~= g_currentMission.player.rootNode then
         if hitObjectId == g_currentMission.terrainRootNode then
             local terrainY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, y, z)
             if string.format("%.3f", y) ~= string.format("%.3f", terrainY) then
@@ -152,7 +159,10 @@ end
 function HeapInfo:showInfo()
     if self.foundHeap ~= nil then
         local info = self:getInfo(self.foundHeap.x, self.foundHeap.z)
-        print(string.format("%s: %.0fl", g_fillTypeManager:getFillTypeNameByIndex(info.fillType), info.amount))
+        if info.fillType ~= FillType.UNKNOWN then
+            --print(string.format("%s: %.0fl", g_fillTypeManager:getFillTypeNameByIndex(info.fillType), info.amount))
+            self.hud:show(info.fillType, info.amount)
+        end
     end
 end
 
@@ -176,7 +186,7 @@ function HeapInfo:getInfo(x, z)
     if fillType ~= FillType.UNKNOWN then
         self:resetIsScanned()
         if self.debug then
-            table.insert(self.debugCubes, {x = startX + self.scanAreaCenterOffset, y = self.foundHeap.y + 1, z = startZ + self.scanAreaCenterOffset, w = self.scanAreaSize, r = 0, g = 1, b = 1})
+            table.insert(self.debugCubes, {x = startX + self.scanAreaCenterOffset, y = 1, z = startZ + self.scanAreaCenterOffset, w = self.scanAreaSize, r = 0, g = 1, b = 1})
         end
         total = self:scanRecursively({{startX, startZ}}, fillType)
     end
@@ -233,9 +243,9 @@ function HeapInfo:scanAt(x, z, fillType)
         )
         if self.debug then
             if amount > 0 then
-                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = self.foundHeap.y + 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 0, g = 1, b = 0})
+                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 0, g = 1, b = 0})
             else
-                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = self.foundHeap.y + 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 1, g = 0, b = 0})
+                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 1, g = 0, b = 0})
             end
         end
         return amount
