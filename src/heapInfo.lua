@@ -45,6 +45,12 @@ function HeapInfo:onPostLoadMap(mapNode, mapFile)
 end
 
 function HeapInfo:onLoadSavegame(savegameDirectory, savegameIndex)
+    self.terrainSize = g_currentMission.terrainSize
+    self.terrainDetailHeightSize = getDensityMapSize(g_currentMission.terrainDetailHeightId)
+    self.scanSize = (self.terrainSize / self.terrainDetailHeightSize) * 2
+    self.scanAreaSize = self.scanSize / 2
+    self.scanAreaOffset = self.scanAreaSize / 2
+    self.scanAreaCenterOffset = self.scanAreaOffset + (self.scanAreaSize / 2)
 end
 
 function HeapInfo:onPreLoadVehicles(xmlFile, resetVehicles)
@@ -57,12 +63,6 @@ function HeapInfo:onPreLoadOnCreateLoadedObjects(xmlFile)
 end
 
 function HeapInfo:onLoadFinished()
-    self.terrainSize = g_currentMission.terrainSize
-    self.terrainDetailHeightSize = getDensityMapSize(g_currentMission.terrainDetailHeightId)
-    self.scanSize = (self.terrainSize / self.terrainDetailHeightSize) * 2
-    self.scanAreaSize = self.scanSize / 2
-    self.scanAreaOffset = self.scanAreaSize / 2
-    self.scanAreaCenterOffset = self.scanAreaOffset + (self.scanAreaSize / 2)
 end
 
 function HeapInfo:onStartMission()
