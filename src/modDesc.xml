@@ -8,22 +8,33 @@
 	<description>
 		<en>
 			<![CDATA[
-En description
+Have you ever wondered, How many sugar beets will there be in that heap?
+If the answer is YES! this will be the right mod for you, thanks to "Heap Info" you will be able to get information about any pile of material that is on the ground, the mod will show you what kind of material it is made of and the amount.
+
+To use it, just approach a heap, point at it and press the "I" button on your keyboard.
 ]]>
 		</en>
 		<de>
 			<![CDATA[
-De description
+Haben Sie sich jemals gefragt, Wie viele Zuckerrüben wird es in diesem Haufen sein?
+Wenn die Antwort ist JA! Dies wird die richtige mod für Sie, dank "Heap Info" werden Sie in der Lage sein, um Informationen über jeden Haufen von material, das ist auf dem Boden, die mod wird Ihnen zeigen, welche Art von material, das es ist aus und die Menge.
+
+Um ihn zu verwenden, nähern Sie sich einfach einem Haufen, zeigen Sie darauf und drücken Sie die "I"-Taste auf Ihrer Tastatur.
 ]]>
 		</de>
 		<fr>
 			<![CDATA[
-Fr description
+Vous êtes-vous déjà demandé combien de betteraves à sucre il y aura dans ce tas?
+Si la réponse est OUI! ce sera le mod qui vous conviendra, grâce à "Heap Info" vous pourrez obtenir des informations sur tout tas de matériel qui se trouve sur le sol, le mod vous montrera de quel type de matériel il est fait et la quantité.
+
+Pour l'utiliser, il suffit de s'approcher d'un tas, de le pointer et d'appuyer sur la touche "I" de votre clavier.
 ]]>
 		</fr>
 	</description>
+
 	<multiplayer supported="true" />
 	<iconFilename>icon.png</iconFilename>
+
 	<extraSourceFiles>
 		<sourceFile filename="rmod/Main.lua" />
 		<sourceFile filename="utility/Main.lua" />
@@ -46,75 +57,11 @@ Fr description
 	<l10n>
 		<text name="input_HEAP_INFO_SHOW">
 			<en>Show the heap informations</en>
+			<de>Heapspeicherinformationen anzeigen</de>
 		</text>
 		<text name="hi_SHOW">
 			<en>Show heap informations</en>
+			<de>Heapspeicherinformationen anzeigen</de>
 		</text>
 	</l10n>
 </modDesc>
-
-<!--
-	<storeItems>
-		<storeItem xmlFilename="storeItem.xml" />
-	</storeItems>
-
-	<specializations>
-		<specialization name="specName" className="SpecClass" filename="specName.lua" />
-	</specializations>
-
-	<vehicleTypes>
-		<type name="typeName" parent="baseDrivable" className="Vehicle" filename="$dataS/scripts/vehicles/Vehicle.lua">
-			<specialization name="specName" />
-		</type>
-	</vehicleTypes>
-
-	<actions>
-		<action name="ACTION_NAME" axisType="HALF" />
-	</actions>
-
-	<inputBinding>
-		<actionBinding action="ACTION_NAME">
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_f" />
-		</actionBinding>
-	</inputBinding>
-
-	<jointTypes>
-		<jointType name="jointTypeName" />
-	</jointTypes>
-
-	<brands>
-		<brand name="BRAND" title="Brand" image="brand_brand.png" />
-	</brands>
-
-	<brandColors>
-		<color name="BRAND_RED1" value="0.4508 0.0176 0.0232 0" />
-	</brandColors>
-
-	<placeableTypes>
-		<placeableType name="placeableTypeName" className="PlaceableTypeClass" filename="placeableType.lua" />
-	</placeableTypes>
-
-	<materialHolders>
-		<materialHolder filename="particleSystems/particle_materialHolder.i3d" />
-	</materialHolders>
-
-	<baleTypes>
-		<baleType filename="objects/roundbales/roundbaleBio.i3d" fillType="WOODCHIPS" isRoundbale="true" width="1.12" diameter="1.3" />
-	</baleTypes>
-
-	<connectionHoseTypes>
-		<connectionHoseType name="connectionHoseName">
-			<adapter name="DEFAULT" filename="shared/connectionHoses/connectors.i3d" node="0|0" />
-			<material name="DEFAULT" filename="$data/shared/connectionHoses/hoseMaterialHolder.i3d" materialNode="1" defaultColor="0.01 0.01 0.01 0" uvOffset="0 0.5" uvScale="2 1" />
-		</connectionHoseType>
-	</connectionHoseTypes>
-
-	l10n/l10n_en.xml, l10n/l10n_de.xml, l10n/l10n_it.xml, ...
-	<l10n filenamePrefix="l10n/l10n" />
-
-	<l10n>
-		<text name="text_key">
-			<en>Text</en>
-		</text>
-	</l10n>
--->

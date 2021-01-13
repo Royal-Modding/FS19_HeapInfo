@@ -2,7 +2,7 @@
 -- Royal Utility
 --
 -- @author Royal Modding
--- @version 1.6.0.0
+-- @version 1.7.0.0
 -- @date 05/01/2021
 
 --- Get the class id and name of an onject
@@ -64,7 +64,7 @@ function Utility.indexToNode(nodeIndex, rootId)
         return nil
     end
     local objectId = rootId
-    local indexes = Utility.split(nodeIndex, "|")
+    local indexes = StringUtility.split(nodeIndex, "|")
     for _, index in pairs(indexes) do
         index = tonumber(index)
         if type(index) == "number" then

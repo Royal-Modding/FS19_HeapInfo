@@ -12,12 +12,12 @@ InitRoyalHud(Utils.getFilename("hud/", g_currentModDirectory))
 ---@class HeapInfo
 HeapInfo = RoyalMod.new(r_debug_r)
 HeapInfo.scanTimer = 0
-HeapInfo.scanTimeout = 500
+HeapInfo.scanTimeout = 350
 HeapInfo.foundHeap = nil
 HeapInfo.debugCubes = {}
 
 function HeapInfo:initialize(baseDirectory, missionCollaborators)
-    addConsoleCommand("hiGetInfo", "Get heap informations.", "consoleCommandGetInfo", self)
+    --addConsoleCommand("hiGetInfo", "Get heap informations.", "consoleCommandGetInfo", self)
     Utility.overwrittenFunction(Player, "new", PlayerExtension.new)
     Utility.appendedFunction(Player, "updateActionEvents", PlayerExtension.updateActionEvents)
     if Player.showHeapInfoActionEvent == nil then
@@ -136,7 +136,7 @@ function HeapInfo:consoleCommandGetInfo()
 end
 
 function HeapInfo:onDeleteMap()
-    removeConsoleCommand("hiGetInfo")
+    --removeConsoleCommand("hiGetInfo")
 end
 
 function HeapInfo:raycastCallback(hitObjectId, x, y, z, _, _, _, _, _, _)

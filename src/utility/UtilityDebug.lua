@@ -2,7 +2,7 @@
 -- Royal Utility
 --
 -- @author Royal Modding
--- @version 1.6.0.0
+-- @version 1.7.0.0
 -- @date 05/01/2021
 
 --- Render a table (for debugging purpose)
@@ -114,7 +114,7 @@ end
 ---@param b number b
 ---@param ar number r color if active
 ---@param ag number g color if active
----@param ab number b color if active\
+---@param ab number b color if active
 ---@param active boolean active?
 function Utility.drawDebugRectangle(node, minX, maxX, minZ, maxZ, yOffset, alignToGround, r, g, b, ar, ag, ab, active)
     if active then
@@ -221,4 +221,41 @@ end
 ---@param b number b
 function Utility.drawDebugLine(p1, p2, r, g, b)
     drawDebugLine(p1[1], p1[2], p1[3], r, g, b, p2[1], p2[2], p2[3], r, g, b)
+end
+
+--- Render an AnimCurve (for debugging purpose)
+---@param x number x position
+---@param y number y position
+---@param w number width
+---@param h number height
+---@param curve table AnimCurve object
+---@param numPointsToShow? integer number of points to render
+function Utility.renderAnimCurve(x, y, w, h, curve, numPointsToShow)
+    local graph = curve.debugGraph
+    local numPoints = numPointsToShow or #curve.keyframes
+    local minTime = 0
+    local maxTime = curve.maxTime
+    if graph == nil then
+        if numPointsToShow == nil then
+            graph = Graph:new(numPoints, x, y, w, h, 0, 0.0001, true, "", Graph.STYLE_LINES)
+            graph:setColor(1, 0, 0, 1)
+            for i, kf in ipairs(curve.keyframes) do
+                local v = curve:get(kf.time)
+                graph:setValue(i, v)
+                graph:setXPosition(i, (kf.time - minTime) / (maxTime - minTime))
+                graph.maxValue = math.max(graph.maxValue, v)
+            end
+        else
+            graph = Graph:new(numPoints + 1, x, y, w, h, 0, 0.0001, true, "", Graph.STYLE_LINES)
+            graph:setColor(1, 0, 0, 1)
+            for s = 1, numPoints + 1 do
+                local i = s - 1
+                local v = curve:get(minTime + (maxTime - minTime) * (i / numPoints))
+                graph:setValue(s, v)
+                graph.maxValue = math.max(graph.maxValue, v)
+            end
+        end
+        curve.debugGraph = graph
+    end
+    graph:draw()
 end

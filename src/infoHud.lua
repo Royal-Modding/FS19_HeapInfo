@@ -60,7 +60,7 @@ function InfoHud:show(fillType, fillLevel, time)
     if fillTypeIcon ~= nil then
         fillTypeIcon:setIsVisible(true)
     end
-    self.fillLevelText:setText(string.format("%d l", fillLevel))
+    self.fillLevelText:setText(string.format("%s l", g_i18n:formatNumber(fillLevel, 0, true)))
     self.showTime = time
 end
 
