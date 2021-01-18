@@ -16,8 +16,8 @@ To use it, just approach a heap, point at it and press the "I" button on your ke
 		</en>
 		<de>
 			<![CDATA[
-Haben Sie sich jemals gefragt, Wie viele Zuckerrüben wird es in diesem Haufen sein?
-Wenn die Antwort ist JA! Dies wird die richtige mod für Sie, dank "Heap Info" werden Sie in der Lage sein, um Informationen über jeden Haufen von material, das ist auf dem Boden, die mod wird Ihnen zeigen, welche Art von material, das es ist aus und die Menge.
+Haben Sie sich jemals gefragt, wie viele Zuckerrüben liegen auf diesem Haufen?
+Wenn Ja, dann ist dies die richtige Mod für Sie. Dank "Heap Info" können Sie Informationen über jeden Materialhaufen erhalten, der sich auf dem Boden befindet. Der Mod zeigt Ihnen, aus welcher Art von Material er besteht und wie groß die Menge ist.
 
 Um ihn zu verwenden, nähern Sie sich einfach einem Haufen, zeigen Sie darauf und drücken Sie die "I"-Taste auf Ihrer Tastatur.
 ]]>
@@ -57,11 +57,11 @@ Pour l'utiliser, il suffit de s'approcher d'un tas, de le pointer et d'appuyer s
 	<l10n>
 		<text name="input_HEAP_INFO_SHOW">
 			<en>Show the heap informations</en>
-			<de>Heapspeicherinformationen anzeigen</de>
+			<de>Haufen Informationen anzeigen</de>
 		</text>
 		<text name="hi_SHOW">
 			<en>Show heap informations</en>
-			<de>Heapspeicherinformationen anzeigen</de>
+			<de>Haufen Informationen anzeigen</de>
 		</text>
 	</l10n>
 </modDesc>
