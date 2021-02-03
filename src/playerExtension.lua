@@ -1,9 +1,8 @@
---
--- ${title}
---
--- @author ${author}
--- @version ${version}
--- @date 11/12/2020
+---${title}
+
+---@author ${author}
+---@version r_version_r
+---@date 11/12/2020
 
 PlayerExtension = {}
 

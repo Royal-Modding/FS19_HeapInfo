@@ -1,9 +1,8 @@
---
--- ${title}
---
--- @author ${author}
--- @version ${version}
--- @date 08/01/2021
+---${title}
+
+---@author ${author}
+---@version r_version_r
+---@date 08/01/2021
 
 ---@class InfoHud : RoyalHudControl
 InfoHud = {}
