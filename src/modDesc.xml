@@ -24,10 +24,10 @@ Um ihn zu verwenden, nähern Sie sich einfach einem Haufen, zeigen Sie darauf un
 		</de>
 		<fr>
 			<![CDATA[
-Vous êtes-vous déjà demandé combien de betteraves à sucre il y aura dans ce tas?
-Si la réponse est OUI! ce sera le mod qui vous conviendra, grâce à "Heap Info" vous pourrez obtenir des informations sur tout tas de matériel qui se trouve sur le sol, le mod vous montrera de quel type de matériel il est fait et la quantité.
+Vous êtes-vous déjà demandé quelle quantité de betteraves se trouve dans ce tas?
+Si la réponse est OUI, ce mod est fait pour vous !! Grâce à "Heap Info", vous obtenez des informations sur les tas (blé, colza, betteraves, etc.) qui se trouvent sur le sol, le type de produit et la quantité totale.
 
-Pour l'utiliser, il suffit de s'approcher d'un tas, de le pointer et d'appuyer sur la touche "I" de votre clavier.
+Pour l'utiliser, il vous suffit d'approcher un tas, de placer le pointeur au centre de votre écran en direction du tas, puis d'appuyer sur la touche "I" de votre clavier.
 ]]>
 		</fr>
 	</description>
@@ -58,10 +58,12 @@ Pour l'utiliser, il suffit de s'approcher d'un tas, de le pointer et d'appuyer s
 		<text name="input_HEAP_INFO_SHOW">
 			<en>Show the heap informations</en>
 			<de>Haufen Informationen anzeigen</de>
+			<fr>Montrer les informations du tas</fr>
 		</text>
 		<text name="hi_SHOW">
 			<en>Show heap informations</en>
 			<de>Haufen Informationen anzeigen</de>
+			<fr>Montrer les informations du tas</fr>
 		</text>
 	</l10n>
 </modDesc>
