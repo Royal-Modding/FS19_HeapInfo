@@ -8,15 +8,18 @@ InitRoyalMod(Utils.getFilename("rmod/", g_currentModDirectory))
 InitRoyalUtility(Utils.getFilename("utility/", g_currentModDirectory))
 InitRoyalHud(Utils.getFilename("hud/", g_currentModDirectory))
 
----@class HeapInfo
-HeapInfo = RoyalMod.new(r_debug_r)
-HeapInfo.scanTimer = 0
-HeapInfo.scanTimeout = 350
+---@class HeapInfo : RoyalMod
+HeapInfo = RoyalMod.new(r_debug_r, false)
+HeapInfo.raycastTimer = 0
+HeapInfo.raycastTimeout = 250
+HeapInfo.scanStartTime = 0
+HeapInfo.scannedPoints = 0
+HeapInfo.maxScanablePoints = 10000 * getViewDistanceCoeff()
+HeapInfo.isScannedBuffer = {}
 HeapInfo.foundHeap = nil
-HeapInfo.debugCubes = {}
+HeapInfo.debugPoints = {}
 
-function HeapInfo:initialize(baseDirectory, missionCollaborators)
-    --addConsoleCommand("hiGetInfo", "Get heap informations.", "consoleCommandGetInfo", self)
+function HeapInfo:initialize(_, _)
     Utility.overwrittenFunction(Player, "new", PlayerExtension.new)
     Utility.appendedFunction(Player, "updateActionEvents", PlayerExtension.updateActionEvents)
     if Player.showHeapInfoActionEvent == nil then
@@ -24,26 +27,11 @@ function HeapInfo:initialize(baseDirectory, missionCollaborators)
     end
 end
 
-function HeapInfo:onSetMissionInfo(missionInfo, missionDynamicInfo)
-end
-
 function HeapInfo:onLoad()
     self.hud = InfoHud:new()
 end
 
-function HeapInfo:onPreLoadMap(mapFile)
-end
-
-function HeapInfo:onLoadMap(mapNode, mapFile)
-end
-
-function HeapInfo:onCreateStartPoint(startPointNode)
-end
-
-function HeapInfo:onPostLoadMap(mapNode, mapFile)
-end
-
-function HeapInfo:onLoadSavegame(savegameDirectory, savegameIndex)
+function HeapInfo:onLoadSavegame(_, _)
     self.terrainSize = g_currentMission.terrainSize
     self.terrainDetailHeightSize = getDensityMapSize(g_currentMission.terrainDetailHeightId)
     self.scanSize = (self.terrainSize / self.terrainDetailHeightSize) * 2
@@ -52,36 +40,16 @@ function HeapInfo:onLoadSavegame(savegameDirectory, savegameIndex)
     self.scanAreaCenterOffset = self.scanAreaOffset + (self.scanAreaSize / 2)
 end
 
-function HeapInfo:onPreLoadVehicles(xmlFile, resetVehicles)
-end
-
-function HeapInfo:onPreLoadItems(xmlFile)
-end
-
-function HeapInfo:onPreLoadOnCreateLoadedObjects(xmlFile)
-end
-
 function HeapInfo:onLoadFinished()
-end
-
-function HeapInfo:onStartMission()
-end
-
-function HeapInfo:onMissionStarted()
-end
-
-function HeapInfo:onWriteStream(streamId)
-end
-
-function HeapInfo:onReadStream(streamId)
+    self.hud:loadFillIcons()
 end
 
 function HeapInfo:onUpdate(dt)
     if g_dedicatedServerInfo == nil and g_currentMission.player.isEntered then
         self.hud:update(dt)
-        self.scanTimer = self.scanTimer + dt
-        if self.scanTimer >= self.scanTimeout then
-            self.scanTimer = 0
+        self.raycastTimer = self.raycastTimer + dt
+        if self.raycastTimer >= self.raycastTimeout then
+            self.raycastTimer = 0
             self.foundHeap = nil
             local x, y, z = localToWorld(g_currentMission.player.cameraNode, 0, 0, 1.0)
             local dx, dy, dz = localDirectionToWorld(g_currentMission.player.cameraNode, 0, 0, -1)
@@ -93,7 +61,7 @@ function HeapInfo:onUpdate(dt)
                 Utility.drawDebugCube({self.foundHeap.x, self.foundHeap.y, self.foundHeap.z}, self.scanAreaOffset, 1, 1, 0)
             end
             local tn = g_currentMission.terrainRootNode
-            for _, c in pairs(self.debugCubes) do
+            for _, c in ipairs(self.debugPoints) do
                 local cw = c.w / 2
                 Utility.drawDebugCube({c.x + cw, getTerrainHeightAtWorldPos(tn, c.x + cw, 0, c.z + cw) + c.y, c.z + cw}, c.w, c.r, c.g, c.b)
             end
@@ -101,41 +69,10 @@ function HeapInfo:onUpdate(dt)
     end
 end
 
-function HeapInfo:onUpdateTick(dt)
-end
-
-function HeapInfo:onWriteUpdateStream(streamId, connection, dirtyMask)
-end
-
-function HeapInfo:onReadUpdateStream(streamId, timestamp, connection)
-end
-
-function HeapInfo:onMouseEvent(posX, posY, isDown, isUp, button)
-end
-
-function HeapInfo:onKeyEvent(unicode, sym, modifier, isDown)
-end
-
 function HeapInfo:onDraw()
     if g_dedicatedServerInfo == nil and g_currentMission.player.isEntered then
         self.hud:draw()
     end
-end
-
-function HeapInfo:onPreSaveSavegame(savegameDirectory, savegameIndex)
-end
-
-function HeapInfo:onPostSaveSavegame(savegameDirectory, savegameIndex)
-end
-
-function HeapInfo:onPreDeleteMap()
-end
-
-function HeapInfo:consoleCommandGetInfo()
-end
-
-function HeapInfo:onDeleteMap()
-    --removeConsoleCommand("hiGetInfo")
 end
 
 function HeapInfo:raycastCallback(hitObjectId, x, y, z, _, _, _, _, _, _)
@@ -157,16 +94,20 @@ end
 
 function HeapInfo:showInfo()
     if self.foundHeap ~= nil then
+        self.scanStartTime = getTimeSec()
+        self.scannedPoints = 0
         local info = self:getInfo(self.foundHeap.x, self.foundHeap.z)
         if info.fillType ~= FillType.UNKNOWN then
-            --print(string.format("%s: %.0fl", g_fillTypeManager:getFillTypeNameByIndex(info.fillType), info.amount))
+            g_logManager:devInfo("[%s] Scanned %d points and found %.1f of %s in %.2fms", self.name, self.scannedPoints, info.amount, g_fillTypeManager:getFillTypeNameByIndex(info.fillType), (getTimeSec() - self.scanStartTime) * 1000)
+            if self.scannedPoints >= self.maxScanablePoints then
+                g_currentMission:showBlinkingWarning(g_i18n:getText("hi_HEAP_TOO_BIG"), 3000)
+            end
             self.hud:show(info.fillType, info.amount)
         end
     end
 end
 
 function HeapInfo:getInfo(x, z)
-    self.debugCubes = {}
     local startX = math.floor(x)
     local startZ = math.floor(z)
 
@@ -185,7 +126,8 @@ function HeapInfo:getInfo(x, z)
     if fillType ~= FillType.UNKNOWN then
         self:resetIsScanned()
         if self.debug then
-            table.insert(self.debugCubes, {x = startX + self.scanAreaCenterOffset, y = 1, z = startZ + self.scanAreaCenterOffset, w = self.scanAreaSize, r = 0, g = 1, b = 1})
+            self.debugPoints = {}
+            table.insert(self.debugPoints, {x = startX + self.scanAreaCenterOffset, y = 1, z = startZ + self.scanAreaCenterOffset, w = self.scanAreaSize, r = 0, g = 1, b = 1})
         end
         total = self:scanRecursively({{startX, startZ}}, fillType)
     end
@@ -196,9 +138,9 @@ end
 function HeapInfo:scanRecursively(points, fillType)
     local total = 0
     for _, point in pairs(points) do
-        local tAmount, newPoints = self:scanAround(point[1], point[2], fillType)
-        total = total + tAmount
-        total = total + self:scanRecursively(newPoints, fillType)
+        local aroundAmount, validAroundPoints = self:scanAround(point[1], point[2], fillType)
+        total = total + aroundAmount
+        total = total + self:scanRecursively(validAroundPoints, fillType)
     end
     return total
 end
@@ -214,21 +156,22 @@ function HeapInfo:scanAround(x, z, fillType)
         {x, z + self.scanSize},
         {x, z - self.scanSize}
     }
-    local total = 0
-    local pointsToReturn = {}
+    local aroundAmount = 0
+    local validAroundPoints = {}
 
     for _, point in pairs(points) do
-        local tAmount = self:scanAt(point[1], point[2], fillType)
-        total = total + tAmount
-        if tAmount > 0 then
-            table.insert(pointsToReturn, point)
+        local pointAmount = self:scanAt(point[1], point[2], fillType)
+        aroundAmount = aroundAmount + pointAmount
+        if pointAmount > 0 then
+            table.insert(validAroundPoints, point)
         end
     end
-    return total, pointsToReturn
+    return aroundAmount, validAroundPoints
 end
 
 function HeapInfo:scanAt(x, z, fillType)
-    if not self:getIsScanned(x, z) then
+    if not self:getIsScanned(x, z) and self.scannedPoints < self.maxScanablePoints then
+        self.scannedPoints = self.scannedPoints + 1
         self:setIsScanned(x, z)
         local amount, _, _ =
             DensityMapHeightUtil.getFillLevelAtArea(
@@ -241,10 +184,13 @@ function HeapInfo:scanAt(x, z, fillType)
             z + self.scanAreaOffset
         )
         if self.debug then
-            if amount > 0 then
-                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 0, g = 1, b = 0})
-            else
-                table.insert(self.debugCubes, {x = x + self.scanAreaCenterOffset, y = 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 1, g = 0, b = 0})
+            -- max 250 debug points to prevent heavy lags
+            if #self.debugPoints <= 250 then
+                if amount > 0 then
+                    table.insert(self.debugPoints, {x = x + self.scanAreaCenterOffset, y = 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 0, g = 1, b = 0})
+                else
+                    table.insert(self.debugPoints, {x = x + self.scanAreaCenterOffset, y = 2, z = z + self.scanAreaCenterOffset, w = self.scanAreaSize / 4, r = 1, g = 0, b = 0})
+                end
             end
         end
         return amount
@@ -253,16 +199,16 @@ function HeapInfo:scanAt(x, z, fillType)
 end
 
 function HeapInfo:resetIsScanned()
-    self.isScanned = {}
+    self.isScannedBuffer = {}
 end
 
 function HeapInfo:setIsScanned(x, z)
-    if not self.isScanned[x] then
-        self.isScanned[x] = {}
+    if not self.isScannedBuffer[x] then
+        self.isScannedBuffer[x] = {}
     end
-    self.isScanned[x][z] = true
+    self.isScannedBuffer[x][z] = true
 end
 
 function HeapInfo:getIsScanned(x, z)
-    return self.isScanned[x] and self.isScanned[x][z]
+    return self.isScannedBuffer[x] and self.isScannedBuffer[x][z]
 end

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="${descVersion}">
 	<author>${author}</author>
 	<version>${version}</version>
@@ -12,6 +12,14 @@ Have you ever wondered, How many sugar beets will there be in that heap?
 If the answer is YES! this will be the right mod for you, thanks to "Heap Info" you will be able to get information about any pile of material that is on the ground, the mod will show you what kind of material it is made of and the amount.
 
 To use it, just approach a heap, point at it and press the "I" button on your keyboard.
+
+Changelog 1.1.0.0:
+- Added new translations
+- Improved overall performances
+- Improved input response time
+- Improved FR translations
+- Fixed stack overflow error with big heaps
+- Fixed missing fill types icons
 ]]>
 		</en>
 		<de>
@@ -20,6 +28,14 @@ Haben Sie sich jemals gefragt, wie viele Zuckerrüben liegen auf diesem Haufen?
 Wenn Ja, dann ist dies die richtige Mod für Sie. Dank "Heap Info" können Sie Informationen über jeden Materialhaufen erhalten, der sich auf dem Boden befindet. Der Mod zeigt Ihnen, aus welcher Art von Material er besteht und wie groß die Menge ist.
 
 Um ihn zu verwenden, nähern Sie sich einfach einem Haufen, zeigen Sie darauf und drücken Sie die "I"-Taste auf Ihrer Tastatur.
+
+Changelog 1.1.0.0:
+- Neue Übersetzungen hinzugefügt
+- Verbesserte Gesamtleistung
+- Verbesserte Reaktionszeit bei der Eingabe
+- Verbesserte FR-Übersetzungen
+- Stack Overflow-Fehler bei großen Heaps behoben
+- Fehlende Fülltypen-Symbole behoben
 ]]>
 		</de>
 		<fr>
@@ -28,6 +44,14 @@ Vous êtes-vous déjà demandé quelle quantité de betteraves se trouve dans ce
 Si la réponse est OUI, ce mod est fait pour vous !! Grâce à "Heap Info", vous obtenez des informations sur les tas (blé, colza, betteraves, etc.) qui se trouvent sur le sol, le type de produit et la quantité totale.
 
 Pour l'utiliser, il vous suffit d'approcher un tas, de placer le pointeur au centre de votre écran en direction du tas, puis d'appuyer sur la touche "I" de votre clavier.
+
+Changelog 1.1.0.0:
+- Ajout de nouvelles traductions
+- Amélioration des performances globales
+- Amélioration du temps de réponse des entrées
+- Amélioration des traductions en français
+- Correction d'une erreur de débordement de pile avec de gros tas
+- Correction des icônes de types de remplissage manquantes
 ]]>
 		</fr>
 	</description>
@@ -59,11 +83,19 @@ Pour l'utiliser, il vous suffit d'approcher un tas, de placer le pointeur au cen
 			<en>Show the heap informations</en>
 			<de>Haufen Informationen anzeigen</de>
 			<fr>Montrer les informations du tas</fr>
+			<it>Mostra le informazioni su un mucchio</it>
 		</text>
 		<text name="hi_SHOW">
 			<en>Show heap informations</en>
 			<de>Haufen Informationen anzeigen</de>
 			<fr>Montrer les informations du tas</fr>
+			<it>Mostra informazioni sul mucchio</it>
+		</text>
+		<text name="hi_HEAP_TOO_BIG">
+			<en>This heap is too much big, it may haven't totally scanned</en>
+			<de>Dieser Haufen ist zu groß, er kann nicht vollständig gescannt worden sein</de>
+			<fr>Ce tas est trop grand, il n'a peut-être pas été totalement scanné</fr>
+			<it>Questo mucchio è troppo grande, potrebbe non essere stato completamente scansionato</it>
 		</text>
 	</l10n>
 </modDesc>

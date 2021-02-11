@@ -19,18 +19,6 @@ function InfoHud:new()
 
     ---@type RoyalHudImage[]
     hud.fillTypesIcons = {}
-    for i, fillType in ipairs(g_fillTypeManager:getFillTypes()) do
-        local iconFilename = fillType.hudOverlayFilename
-        if g_screenHeight <= g_referenceScreenHeight then
-            iconFilename = fillType.hudOverlayFilenameSmall
-        end
-        if iconFilename ~= "dataS2/menu/hud/fillTypes/hud_fill_fuel.png" and iconFilename ~= "" then
-            local fillIcon = RoyalHudImage:new("fti_" .. i, iconFilename, 10, 10, 50, 50, hud.panel)
-            fillIcon:setAlignment(RoyalHud.ALIGNS_VERTICAL_BOTTOM, RoyalHud.ALIGNS_HORIZONTAL_LEFT)
-            fillIcon:setIsVisible(false)
-            hud.fillTypesIcons[fillType.index] = fillIcon
-        end
-    end
 
     hud.fillLevelText = RoyalHudText:new("flt", "", 29, false, width - 17, 16, hud.panel)
     hud.fillLevelText:setAlignment(RoyalHud.ALIGNS_VERTICAL_BOTTOM, RoyalHud.ALIGNS_HORIZONTAL_RIGHT)
@@ -66,5 +54,20 @@ end
 function InfoHud:setFillTypeIconsVisibility(visible)
     for _, icon in pairs(self.fillTypesIcons) do
         icon:setIsVisible(visible)
+    end
+end
+
+function InfoHud:loadFillIcons()
+    for i, fillType in ipairs(g_fillTypeManager:getFillTypes()) do
+        local iconFilename = fillType.hudOverlayFilename
+        if g_screenHeight <= g_referenceScreenHeight then
+            iconFilename = fillType.hudOverlayFilenameSmall
+        end
+        if iconFilename ~= "dataS2/menu/hud/fillTypes/hud_fill_fuel.png" and iconFilename ~= "" then
+            local fillIcon = RoyalHudImage:new("fti_" .. i, iconFilename, 10, 10, 50, 50, self.panel)
+            fillIcon:setAlignment(RoyalHud.ALIGNS_VERTICAL_BOTTOM, RoyalHud.ALIGNS_HORIZONTAL_LEFT)
+            fillIcon:setIsVisible(false)
+            self.fillTypesIcons[fillType.index] = fillIcon
+        end
     end
 end
