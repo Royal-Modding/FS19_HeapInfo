@@ -40,7 +40,7 @@ function HeapInfo:onLoadSavegame(_, _)
     self.scanAreaCenterOffset = self.scanAreaOffset + (self.scanAreaSize / 2)
 end
 
-function HeapInfo:onLoadFinished()
+function HeapInfo:onStartMission()
     self.hud:loadFillIcons()
 end
 
