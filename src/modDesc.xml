@@ -13,13 +13,8 @@ If the answer is YES! this will be the right mod for you, thanks to "Heap Info" 
 
 To use it, just approach a heap, point at it and press the "I" button on your keyboard.
 
-Changelog 1.1.0.0:
-- Added new translations
-- Improved overall performances
-- Improved input response time
-- Improved FR translations
-- Fixed stack overflow error with big heaps
-- Fixed missing fill types icons
+Changelog ${version}:
+- Fixed missing fill type icons in MP
 ]]>
 		</en>
 		<de>
@@ -29,13 +24,8 @@ Wenn Ja, dann ist dies die richtige Mod für Sie. Dank "Heap Info" können Sie I
 
 Um ihn zu verwenden, nähern Sie sich einfach einem Haufen, zeigen Sie darauf und drücken Sie die "I"-Taste auf Ihrer Tastatur.
 
-Changelog 1.1.0.0:
-- Neue Übersetzungen hinzugefügt
-- Verbesserte Gesamtleistung
-- Verbesserte Reaktionszeit bei der Eingabe
-- Verbesserte FR-Übersetzungen
-- Stack Overflow-Fehler bei großen Heaps behoben
-- Fehlende Fülltypen-Symbole behoben
+Changelog ${version}:
+- Fehlende Füllsymbole in MP behoben
 ]]>
 		</de>
 		<fr>
@@ -45,13 +35,8 @@ Si la réponse est OUI, ce mod est fait pour vous !! Grâce à "Heap Info", vous
 
 Pour l'utiliser, il vous suffit d'approcher un tas, de placer le pointeur au centre de votre écran en direction du tas, puis d'appuyer sur la touche "I" de votre clavier.
 
-Changelog 1.1.0.0:
-- Ajout de nouvelles traductions
-- Amélioration des performances globales
-- Amélioration du temps de réponse des entrées
-- Amélioration des traductions en français
-- Correction d'une erreur de débordement de pile avec de gros tas
-- Correction des icônes de types de remplissage manquantes
+Changelog ${version}:
+- Correction des icônes de type de remplissage manquantes dans MP
 ]]>
 		</fr>
 	</description>
