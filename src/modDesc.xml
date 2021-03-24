@@ -70,6 +70,7 @@ Changelog ${version}:
 			<fr>Montrer les informations du tas</fr>
 			<it>Mostra le informazioni su un mucchio</it>
 			<pl>Pokaż informacje o kopcu</pl>
+			<ru>Показать информацию о куче</ru>
 		</text>
 		<text name="hi_SHOW">
 			<en>Show heap informations</en>
@@ -77,6 +78,7 @@ Changelog ${version}:
 			<fr>Montrer les informations du tas</fr>
 			<it>Mostra informazioni sul mucchio</it>
 			<pl>Pokaż informacje o kopcu</pl>
+			<ru>Показать информацию о куче</ru>
 		</text>
 		<text name="hi_HEAP_TOO_BIG">
 			<en>This heap is too much big, it may haven't totally scanned</en>
@@ -84,6 +86,7 @@ Changelog ${version}:
 			<fr>Ce tas est trop grand, il n'a peut-être pas été totalement scanné</fr>
 			<it>Questo mucchio è troppo grande, potrebbe non essere stato completamente scansionato</it>
 			<pl>Ten kopiec jest zbyt duży, może nie zostać całkowicie zeskanowany</pl>
+			<ru>Эта куча слишком велика, она не может быть полностью отсканирована</ru>
 		</text>
 	</l10n>
 </modDesc>

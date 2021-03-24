@@ -19,7 +19,7 @@ HeapInfo.isScannedBuffer = {}
 HeapInfo.foundHeap = nil
 HeapInfo.debugPoints = {}
 
-function HeapInfo:initialize(_, _)
+function HeapInfo:initialize()
     Utility.overwrittenFunction(Player, "new", PlayerExtension.new)
     Utility.appendedFunction(Player, "updateActionEvents", PlayerExtension.updateActionEvents)
     if Player.showHeapInfoActionEvent == nil then
